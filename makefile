@@ -4,8 +4,9 @@
 # Perform full deployment
 deploy: clean set_artifacts_directory package bogie-deploy
 full-update: clean set_artifacts_directory package update
-
 packagename = "src"
+
+
 
 # Clean out artifacts
 clean: 
@@ -16,6 +17,8 @@ clean:
 set_artifacts_directory:
 	@mkdir -p ./artifact/source; \
 
+
+
 package: set_artifacts_directory
 	@echo "Creating Artifact"
 	@( \
@@ -25,14 +28,17 @@ package: set_artifacts_directory
 		zip -r9 ../artifact.zip . > /dev/null 2>&1; \
 		popd > /dev/null 2>&1; \
 		rm -rf ./artifact/source; \
-    )
+    	)
+
+
 
 update:
 	@echo "Updating Lambda..."
 	@aws lambda update-function-code --function-name "$(packagename)-lambda" --zip-file fileb://artifact/artifact.zip --region us-east-1
 
+
 destroy:
 	@echo "Destroying Lambda..."
 	@( \
-		export BG_VAR_CUSTOM_DEPLOYMENT_NAME="$(packagename)-lambda"; \
+		@aws lambda update-function-code --function-name "$(packagename)-lambda" --zip-file fileb://artifact/artifact.zip --region us-east; \
 	)
