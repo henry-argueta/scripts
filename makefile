@@ -30,8 +30,6 @@ package: set_artifacts_directory
 		rm -rf ./artifact/source; \
     	)
 
-
-
 update:
 	@echo "Updating Lambda..."
 	@aws lambda update-function-code --function-name "$(packagename)-lambda" --zip-file fileb://artifact/artifact.zip --region us-east-1

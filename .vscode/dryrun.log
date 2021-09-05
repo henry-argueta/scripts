@@ -1,0 +1,23 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/henryargueta/crypto/scripts'
+ 
+( \
+		rm -rf ./artifact/
+)
+ 
+mkdir -p ./artifact/source; \
+
+echo "Creating Artifact"
+( \
+		cp -R ./src/* ./artifact/source; \
+		pushd ./artifact/source > /dev/null 2>&1; \
+		docker run -v /Users/henryargueta/crypto/scripts/artifact:/app -w /app/source python:3.8-slim-buster pip \
+			-v install -q -r requirements.txt; \
+		zip -r9 ../artifact.zip . > /dev/null 2>&1; \
+		popd > /dev/null 2>&1; \
+		rm -rf ./artifact/source; \
+    	)
+echo "Updating Lambda..."
+aws lambda update-function-code --function-name ""src"-lambda" --zip-file fileb://artifact/artifact.zip --region us-east-1
+make: Leaving directory `/Users/henryargueta/crypto/scripts'
+ 
