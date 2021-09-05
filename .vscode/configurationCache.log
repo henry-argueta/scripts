@@ -1,0 +1,1 @@
+{"buildTargets":["all","clean","destroy","full-update","package","set_artifacts_directory","update"],"launchTargets":[],"customConfigurationProvider":{"workspaceBrowse":{"browsePath":[],"compilerArgs":[]},"fileIndex":[]}}
